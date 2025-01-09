@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Websocket Chatting</title>
+
+    <script>
+      const ws = new WebSocket("ws://localhost:8008")
+
+      // 메세지 전송
+      function sendMessage() {}
+
+      // 메세지 수신
+      function receiveMessage() {
+        const chat = document.createElement("div")
+        const message = document.createTextNode(event.data)
+        chat.appendChild(message)
+
+        const chatLog = document.getElementById("chat-log")
+        chatLog.appendChild(chat)
+      }
+      ws.onmessage = receiveMessage
+
+      function clearMessage () {
+        document.getElementById("message").value = "";
+      }
+
+      function sendMessage() {
+        const nickname = document.getElementById("nickname").value
+        const message = document.getElementById("message").value
+        const fullMessage = `${nickname}: ${message}`
+        ws.send(fullMessage)
+        clearMessage()
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Websocket Chat</h1>
+    <div>
+      <input
+        type="text"
+        id="nickname"
+        placeholder="닉네임"
+        style="width: 50px"
+      />
+      <input
+        type="text"
+        id="message"
+        placeholder="메세지"
+        style="width: 200px"
+      />
+      <button onclick="sendMessage()">전송</button>
+    </div>
+
+    <div id="chat-log"></div>
+  </body>
+</html>
